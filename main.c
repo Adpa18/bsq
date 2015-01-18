@@ -5,30 +5,35 @@
 ** Login   <wery_a@epitech.net>
 ** 
 ** Started on  Mon Jan 12 15:22:24 2015 adrien wery
-** Last update Thu Jan 15 20:10:35 2015 adrien wery
+** Last update Sun Jan 18 23:21:32 2015 adrien wery
 */
 
 #include "bsq.h"
 
-void	display_bsq(t_bsq bsq)
+void    display_bsq(t_bsq bsq)
 {
-  int	x;
-  int	y;
+  int   x;
+  int   y;
 
-  x = 0;
   y = 0;
   while (y < bsq.len_y)
     {
       x = 0;
       while (x < bsq.len_x)
-	{
-	  if (y >= bsq.y && y < bsq.y + bsq.size &&
-	      x >= bsq.x && x < bsq.x + bsq.size)
-	    my_putchar('x');
-	  else
-	    my_putchar(bsq.s[y * bsq.len_y + x]);
-	  x += 1;
-	}
+        {
+          if (y >= bsq.y && y < bsq.y + bsq.size &&
+              x >= bsq.x && x < bsq.x + bsq.size)
+            {
+              my_str("\e[01;31m", 1);
+              bsq.s[y * bsq.len_y + x] = 'x';
+            }
+          else if (bsq.s[y * bsq.len_y + x] == 'o')
+            my_str("\e[01;32m", 1);
+          else
+            my_str("\e[01;33m", 1);
+          my_putchar(bsq.s[y * bsq.len_y + x]);
+          x += 1;
+        }
       y += 1;
       my_putchar('\n');
     }
@@ -87,21 +92,30 @@ int	make_bsq_2(t_bsq *bsq)
   return (i);
 }
 
-int	make_bsq(t_bsq bsq)
+int     make_bsq(t_bsq bsq)
 {
-  int	i;
+  int   i;
 
   bsq.y1 = 0;
   while (bsq.y1 + bsq.size < bsq.len_y)
     {
       bsq.x1 = 0;
       while (bsq.x1 + bsq.size < bsq.len_x)
-	i += make_bsq_2(&bsq);
+        i += make_bsq_2(&bsq);
       bsq.y1 += 1;
     }
   display_bsq(bsq);
-  printf("%d\n", i);
-  printf("[%d][%d] c = %d\n", bsq.x, bsq.y, bsq.size);
+  my_str("\e[01;39m", 1);
+  my_str("\nSTEP = ", 1);
+  my_put_nbr(i);
+  my_str("\nPos = [", 1);
+  my_put_nbr(bsq.y);
+  my_str("][", 1);
+  my_put_nbr(bsq.x);
+  my_str("] ", 1);
+  my_str("\nSize = ", 1);
+  my_put_nbr(bsq.size);
+  my_putchar('\n');
   free(bsq.s);
   return (0);
 }
@@ -111,22 +125,23 @@ int	main(int argc, char **argv)
   t_bsq	bsq;
   char	*buff;
   int	fd;
+  int	i;
 
   if (argc != 2)
-    my_error("Need only one argument, the file !!!");
+    my_error("Need only one argument : the file !!!");
   buff = my_malloc(BUFF_SIZE);
   bsq.x = 0;
   bsq.y = 0;
-  bsq.len_x = 0;
   bsq.len_y = 0;
   bsq.x2 = 0;
   bsq.y2 = 0;
   bsq.size = 0;
-  if ((fd = open(argv[1], O_RDONLY)) < 0)
-    my_error("Error on file oppening !!");
-  bsq.s = my_malloc(get_len(fd, &bsq, buff) + 1);
-  if ((fd = open(argv[1], O_RDONLY)) < 0)
-    my_error("Error on file oppening !!");
+  fd = my_open(argv[1]);
+  i = get_len(fd, &bsq, buff);
+  if (bsq.len_y < 3 || i < 10)
+    my_error("File isn't accept !!!");
+  fd = my_open(argv[1]);
+  bsq.s = my_malloc(i + 1);
   get_tab(fd, &bsq, buff);
   check_tab(bsq.s, bsq.len_x, bsq.len_y);
   make_bsq(bsq);

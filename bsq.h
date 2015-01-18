@@ -5,7 +5,7 @@
 ** Login   <wery_a@epitech.net>
 ** 
 ** Started on  Mon Jan 12 15:47:15 2015 adrien wery
-** Last update Thu Jan 15 20:03:06 2015 adrien wery
+** Last update Fri Jan 16 18:04:33 2015 adrien wery
 */
 
 #include <sys/stat.h>
@@ -34,6 +34,8 @@ int     my_str(char *s, int mode);
 char    *my_memset(char *s, char c, int size);
 void    my_error(char *s);
 char	*my_malloc(int len);
+void	my_put_nbr(int nb);
+int	my_open(char *file);
 int     main(int argc, char **argv);
 int	get_len(int fd, t_bsq *bsq, char *buff);
 void	get_tab(int fd, t_bsq *bsq, char *buff);

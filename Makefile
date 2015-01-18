@@ -5,12 +5,13 @@
 ## Login   <wery_a@epitech.net>
 ## 
 ## Started on  Mon Jan 12 15:48:24 2015 adrien wery
-## Last update Thu Jan 15 20:12:13 2015 adrien wery
+## Last update Sun Jan 18 23:24:28 2015 adrien wery
 ##
 
 SRC	= main.c \
 	  get_file.c \
-	  str.c
+	  str.c \
+	  my_put_nbr.c
 
 CC	= gcc
 
@@ -28,7 +29,7 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) *~ *#
 
 fclean: clean
 	$(RM) $(NAME)
